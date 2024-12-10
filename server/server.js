@@ -49,7 +49,7 @@ const credentials = {
 app.post('/api/spawn-terminal', async (req, res) => {
     try {
         const container = await docker.createContainer({
-            Image: 'tsl0922/ttyd',
+            Image: 'tsl0922/ttyd:alpine',
             Tty: true, // Enable TTY
             OpenStdin: true, // Keep stdin open
             Cmd: ['ttyd', '--port', '7681', '--check-origin=false', '--writable', '/bin/bash'], // Fully interactive terminal

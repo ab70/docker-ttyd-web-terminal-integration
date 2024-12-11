@@ -45,6 +45,7 @@ const credentials = {
     },
 };
 
+
 // API to spawn terminal
 app.post('/api/spawn-terminal', async (req, res) => {
     try {
@@ -52,7 +53,16 @@ app.post('/api/spawn-terminal', async (req, res) => {
             Image: 'tsl0922/ttyd:alpine',
             Tty: true, // Enable TTY
             OpenStdin: true, // Keep stdin open
-            Cmd: ['ttyd', '--port', '7681', '--check-origin=false', '--writable', '/bin/bash'], // Fully interactive terminal
+            Cmd: [
+                'ttyd', 
+                '--port', 
+                '7681', 
+                '--check-origin=false', 
+                '--writable', 
+                '/bin/bash', 
+                '-c', 
+                'apk add --no-cache openssh sshpass && sshpass -p "password" ssh -o StrictHostKeyChecking=no abrar@10.10.10.40'
+            ], // Fully interactive terminal and auto-connect to SSH
             ExposedPorts: { "7681/tcp": {} },
             HostConfig: {
                 PortBindings: {
@@ -80,8 +90,9 @@ app.post('/api/spawn-terminal', async (req, res) => {
 });
 
 
+
 // Start the server
 const PORT = 3001;
 app.listen(PORT, () => {
-    console.log(`Backend running on http://localhost:${PORT}`);
+    console.log(`Backend running on http://localhost:${PORT}++`);
 });
